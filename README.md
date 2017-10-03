@@ -18,6 +18,14 @@ To install this tool, clone the repository from github:
 git clone git@github.com:mwlang/crypto.git
 ~~~
 
+Change to the crypto folder and install necessary gems (the Ruby language is required and assumed already installed!)
+
+~~~
+cd crypto
+bundle install
+~~~
+NOTE:  The "bittrex API ruby gem" has bugs.  I've forked and fixed those bugs and submitted PR.
+
 Set your API keys for Bittrex and Coinbase (the only supported exchanges at the moment) by changing to crypto folder and copy config/exchanges.yml.example to config/exchanges.yml and add your API key and API Secret to the file.  You'll need both to successfully use this tool to see BTC and USD.  Errors will likely occur without the file and keys in place.
 
 ~~~YAML
