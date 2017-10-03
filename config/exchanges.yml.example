@@ -1,0 +1,6 @@
+bittrex:
+  api_key: d1d433126b129f2805218888888
+  api_secret: 123448146894902804664fd88888888
+coinbase:
+  api_key: CdQbcdePEmm6HfWa
+  api_secret: cmkWiSwAjDqaPix58ASBCDPFEEPiM6AmL
