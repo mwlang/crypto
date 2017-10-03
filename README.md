@@ -10,6 +10,29 @@ Presently, this tool is wired only to Bittrex and Coinbase.  To set up for your 
 
 CAUTION:  THERE MAY BE BUGS!  Report bugs in the issue tracker or send me a PR with the bug already fixed!
 
+To see all commands available:
+
+~~~
+>> rake -T
+rake closed_orders # Shows closed order history
+rake open_orders   # Shows open orders
+rake rates         # Retrieves current rates
+rake run           # runs full stack orders, wallets, etc
+rake wallets       # Lists wallets with a balance
+~~~
+
+To see Coinbase rates:
+~~~
+>> rake rates
++----------+-----------+
+| Exchange | Rate      |
++----------+-----------+
+| BTC/USD  | $ 4291.85 |
+| ETH/USD  | $  290.99 |
+| LTC/USD  | $   52.04 |
++----------+-----------+
+~~~
+
 See the balance on every non-zero balance wallet.
 ~~~
 >> rake wallets
@@ -24,6 +47,7 @@ See the balance on every non-zero balance wallet.
 | OMG    | 227.23392835 |   0.00000000 |   0.00000000 | $   2028.53 |
 | PAY    | 388.11615012 |   0.00000000 |   0.00000000 | $    884.16 |
 | XRP    | 5000.0000000 |   0.00000000 |   0.00000000 | $   1012.02 |
+|                              . . .                                |
 +--------+--------------+--------------+--------------+-------------+
 ~~~
 
@@ -41,6 +65,7 @@ The difference between Ask and Current is expressed as a percentage in the Gap c
 | SELL  | XRP    | $   1184.55 |  5000.00 |  5000.00  |   0.00005520 |   0.00004714 | 14.60% |
 | SELL  | PAY    | $   2098.09 |   388.12 |   388.12  |   0.00125956 |   0.00053079 | 57.86% |
 | SELL  | DOGE   | $    321.89 | 250000.0 | 250000.0  |   0.00000030 |   0.00000024 | 20.00% |
+|                                             . . .                                          |
 +-------+--------+-------------+----------+-----------+--------------+--------------+--------+
 ~~~
 
@@ -55,5 +80,6 @@ See the last 30 days of orders that have closed
 | BUY   | QTUM    | $    592.45 |    58.00 |     0.00  |   0.00238001 |   0.00034510 | Sat 09/30 05:23 AM |
 | SELL  | QTUM    | $     34.78 |    22.51 |     0.00  |   0.00036000 |   0.00013499 | Fri 09/29 19:36 PM |
 | SELL  | QTUM    | $   1076.40 |    99.90 |     0.00  |   0.00251053 |   0.00062700 | Tue 09/26 04:34 AM |
+|                                                    . . .                                                |
 +-------+---------+-------------+----------+-----------+--------------+--------------+--------------------+
 ~~~

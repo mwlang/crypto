@@ -47,11 +47,6 @@ task :environment do
   load_configurations
 end
 
-desc "Gets prices"
-task :prices => [:environment] do
-  puts Bittrex::Quote.current('BTC-LTC').bid
-end
-
 def satoshi value
   "%12.12s" % ("%0.8f" % value) rescue ''
 end
@@ -106,7 +101,7 @@ task :open_orders => [:environment] do
 end
 
 desc "Shows closed order history"
-task :closed_order => [:environment] do
+task :closed_orders => [:environment] do
   histories = Bittrex::Order.history
   t = Terminal::Table.new
   t << %w(Order Symbol Cost Quantity Remaining Limit Commission Executed)
@@ -159,6 +154,6 @@ task :rates => [:environment] do
 end
 
 desc "runs full stack orders, wallets, etc."
-task :run => [:environment, :order_history, :rates]
+task :run => [:environment, :closed_orders, :open_orders, :wallets, :rates]
 
 task default: :run
