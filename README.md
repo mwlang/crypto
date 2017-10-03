@@ -6,9 +6,30 @@ Since I also like to place SELL orders with a LIMIT, I like to know how far away
 
 That's the start of this little tool, which I expect will grow in features over time.
 
-Presently, this tool is wired only to Bittrex and Coinbase.  To set up for your own use, copy config/exchanges.yml.example to config/exchanges.yml and add your API key and secret to the file.
+Presently, this tool is wired only to Bittrex and Coinbase.  
 
 CAUTION:  THERE MAY BE BUGS!  Report bugs in the issue tracker or send me a PR with the bug already fixed!
+
+## To Install
+
+To install this tool, clone the repository from github:
+
+~~~
+git clone git@github.com:mwlang/crypto.git
+~~~
+
+Set your API keys for Bittrex and Coinbase (the only supported exchanges at the moment) by changing to crypto folder and copy config/exchanges.yml.example to config/exchanges.yml and add your API key and API Secret to the file.  You'll need both to successfully use this tool to see BTC and USD.  Errors will likely occur without the file and keys in place.
+
+~~~YAML
+bittrex:
+  api_key: d1d433126b129f2805218888888
+  api_secret: 123448146894902804664fd88888888
+coinbase:
+  api_key: CdQbcdePEmm6HfWa
+  api_secret: cmkWiSwAjDqaPix58ASBCDPFEEPiM6AmL
+~~~
+
+## Usage
 
 To see all commands available:
 
