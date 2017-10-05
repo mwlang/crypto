@@ -156,8 +156,9 @@ end
 
 desc "Given Bitcoin amount, returns USD"
 task :btcusd, [:btc] => [:environment] do |t, args|
-  if btc = args[:btc]
-    puts to_usd "BTC", btc.to_f
+  if btc = args[:btc].to_f
+    puts "BTC:      #{satoshi(btc)}"
+    puts "USD: #{usd('BTC', btc)}"
   else
     puts "BTC amount not supplied!"
   end
