@@ -50,6 +50,26 @@ rake run           # runs full stack orders, wallets, etc
 rake wallets       # Lists wallets with a balance
 ~~~
 
+### Aliases
+
+Several commands have short aliases for them:
+
+* oo => open_orders
+* co => closed_orders
+* r => rates
+* w => wallets
+
+~~~
+>> rake w
++--------+--------------+--------------+--------------+-------------+
+| Symbol | Quantity     | Available    | Pending      | USD         |
++--------+--------------+--------------+--------------+-------------+
+| BTC    |   0.00023420 |   0.00023420 |   0.00000000 | $      0.00 |
+| DOGE   | 250000.00000 |   0.00000000 |   0.00000000 | $    257.51 |
+|                              . . .                                |
++--------+--------------+--------------+--------------+-------------+
+~~~
+
 To see Coinbase rates:
 ~~~
 >> rake rates
