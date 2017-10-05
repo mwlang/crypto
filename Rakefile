@@ -79,7 +79,7 @@ desc "Shows open orders"
 task :open_orders => [:environment] do
   orders = Bittrex::Order.open
   t = Terminal::Table.new
-  t << %w(Order Symbol Cost Quantity Remaining Ask Current Gap)
+  t << %w(Order Symbol Cost Quantity Remaining Ask Current USD Gap)
   t << :separator
   orders.each do |h|
     market, symbol = h.exchange.split("-")
@@ -94,6 +94,7 @@ task :open_orders => [:environment] do
       rjust(h.remaining),
       satoshi(h.limit),
       satoshi(current_price(h.exchange)),
+      usd(market, current_price(h.exchange)),
       "%0.2f%" % pc
     ]
   end
