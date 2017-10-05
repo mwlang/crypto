@@ -99,6 +99,7 @@ task :open_orders => [:environment] do
   end
   puts t
 end
+task oo: :open_orders
 
 desc "Shows closed order history"
 task :closed_orders => [:environment] do
@@ -122,6 +123,7 @@ task :closed_orders => [:environment] do
   end
   puts t
 end
+task co: :closed_orders
 
 desc "Lists wallets with a balance"
 task :wallets => [:environment] do
@@ -141,6 +143,7 @@ task :wallets => [:environment] do
   end
   puts t
 end
+task w: :wallets
 
 desc "Retrieves current rates"
 task :rates => [:environment] do
@@ -153,6 +156,7 @@ task :rates => [:environment] do
   t << ["LTC/USD", "$%8.8s" % ("%0.2f" % (1 / coinbase.exchange_rates["rates"]["LTC"].to_f))]
   puts t
 end
+task r: :rates
 
 desc "Given Bitcoin amount, returns USD"
 task :btcusd, [:btc] => [:environment] do |t, args|
