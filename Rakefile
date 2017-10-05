@@ -104,7 +104,7 @@ desc "Shows closed order history"
 task :closed_orders => [:environment] do
   histories = Bittrex::Order.history
   t = Terminal::Table.new
-  t << %w(Order Symbol Cost Quantity Remaining Limit Commission Executed)
+  t << %w(Order Symbol Cost Quantity Remaining Limit Total Commission Executed)
   t << :separator
   histories.each do |h|
     market, symbol = h.exchange.split("-")
@@ -115,6 +115,7 @@ task :closed_orders => [:environment] do
       rjust(h.quantity),
       rjust(h.remaining),
       satoshi(h.limit),
+      satoshi(h.limit * h.quantity),
       satoshi(h.raw['Commission']),
       h.executed_at.strftime("%a %m/%d %H:%M %p")
     ]
@@ -151,6 +152,15 @@ task :rates => [:environment] do
   t << ["ETH/USD", "$%8.8s" % ("%0.2f" % (1 / coinbase.exchange_rates["rates"]["ETH"].to_f))]
   t << ["LTC/USD", "$%8.8s" % ("%0.2f" % (1 / coinbase.exchange_rates["rates"]["LTC"].to_f))]
   puts t
+end
+
+desc "Given Bitcoin amount, returns USD"
+task :btcusd, [:btc] => [:environment] do |t, args|
+  if btc = args[:btc]
+    puts to_usd "BTC", btc.to_f
+  else
+    puts "BTC amount not supplied!"
+  end
 end
 
 desc "runs full stack orders, wallets, etc."
