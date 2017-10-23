@@ -132,8 +132,14 @@ See the last 30 days of orders that have closed
 +-------+---------+-------------+----------+-----------+--------------+--------------+--------------|--------------------+
 ~~~
 
-Get USD amount for given BTC amount
+Get USD amount for given BTC amount and vice versa
+
 ~~~
->> rake btcusd[0.02812500]
-$      3.35
+>> rake usdbtc[24.3196]
+BTC:        0.00420729
+USD: $     24.32
+
+>> rake btcusd[0.0640625]
+BTC:        0.06406250
+USD: $    374.63
 ~~~
