@@ -6,3 +6,4 @@ gem 'bittrex', github: "mwlang/bittrex", branch: "master"
 #gem 'slack-notifier'
 gem 'terminal-table'
 gem 'coinbase'
+gem 'coinbase-exchange'

@@ -2,6 +2,7 @@ require 'yaml'
 require 'bittrex'
 require 'terminal-table'
 require 'coinbase/wallet'
+require 'coinbase/exchange'
 
 def log(msg)
   indent = (msg =~ /\.\.\.|\!/ ? 0 : 1)
@@ -18,6 +19,10 @@ end
 
 def coinbase
   @coinbase ||= Coinbase::Wallet::Client.new(api_key: config["coinbase"]["api_key"], api_secret: config["coinbase"]["api_secret"])
+end
+
+def gdax
+  @gdax ||= Coinbase::Exchange::Client.new(config["gdax"]["api_key"], config["gdax"]["api_secret"], config["gdax"]["api_passphrase"])
 end
 
 def load_configurations
@@ -59,6 +64,10 @@ end
 
 def usd market, value
   "$%10.10s" % ("%0.2f" % ((1 / market_usd_exchange_rate(market)) * value))
+end
+
+def btc usd
+  usd * coinbase.exchange_rates["rates"]["BTC"].to_f
 end
 
 def rjust value
@@ -166,6 +175,25 @@ task :btcusd, [:btc] => [:environment] do |t, args|
     puts "USD: #{usd('BTC', btc)}"
   else
     puts "BTC amount not supplied!"
+  end
+end
+
+desc "Given USD amount, returns BTC"
+task :usdbtc, [:usd] => [:environment] do |t, args|
+  if usd = args[:usd].to_f
+    amount = btc(usd)
+    puts "BTC:      #{satoshi(amount)}"
+    puts "USD: #{usd('USD', usd)}"
+  else
+    puts "USD amount not supplied!"
+  end
+end
+
+task :lt => [:environment] do
+  gdax.accounts do |resp|
+    resp.each do |account|
+      p "#{account.id}: %.2f #{account.currency} available for trading" % account.available
+    end
   end
 end
 
