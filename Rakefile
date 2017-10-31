@@ -33,7 +33,6 @@ def load_configurations
     c.key = config["bittrex"]["api_key"]
     c.secret = config["bittrex"]["api_secret"]
   end
-
 end
 
 def task_root_path
@@ -80,8 +79,13 @@ def current_price symbol
 end
 
 def to_usd symbol, value
-  rate = symbol == "BTC" ? value : current_price("BTC-#{symbol}")
+  rate = symbol == "BTC" ? coinbase.exchange_rates["rates"]["USD"].to_f : current_price("BTC-#{symbol}")
   usd "BTC", rate * value
+end
+
+def to_btc symbol, value
+  rate = symbol == "BTC" ? value : current_price("BTC-#{symbol}")
+  rate * value
 end
 
 desc "Shows open orders"
@@ -139,7 +143,7 @@ desc "Lists wallets with a balance"
 task :wallets => [:environment] do
   wallets = Bittrex::Wallet.all
   t = Terminal::Table.new
-  t << %w(Symbol Quantity Available Pending USD)
+  t << %w(Symbol Quantity Available Pending USD BTC)
   t << :separator
   wallets.sort_by{|sb| sb.currency}.each do |w|
     next if w.balance.zero?
@@ -149,6 +153,7 @@ task :wallets => [:environment] do
       satoshi(w.available),
       satoshi(w.pending),
       to_usd(w.currency, w.balance),
+      satoshi(to_btc(w.currency, w.balance)),
     ]
   end
   puts t
