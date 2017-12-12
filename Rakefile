@@ -94,7 +94,7 @@ task :open_orders => [:environment] do
   t = Terminal::Table.new
   t << %w(Order Symbol Cost Quantity Remaining Ask Current USD Gap)
   t << :separator
-  orders.each do |h|
+  orders.sort_by{|sb| sb.exchange}.each do |h|
     market, symbol = h.exchange.split("-")
     ask = h.limit
     current = current_price(h.exchange)
@@ -138,6 +138,45 @@ task :closed_orders => [:environment] do
   puts t
 end
 task co: :closed_orders
+
+desc "Shows withdrawals"
+task :withdrawals => [:environment] do
+  txs = Bittrex::Withdrawal.all
+  t = Terminal::Table.new
+  t << %w(Currency Qty Auth Pending Canceled TxCost Date)
+  t << :separator
+  txs.sort_by{|sb| [sb.currency, sb.executed_at]}.each do |tx|
+    t << [
+      tx.currency,
+      satoshi(tx.quantity),
+      tx.authorized,
+      tx.pending,
+      tx.canceled,
+      tx.transaction_cost,
+      tx.executed_at.strftime("%a %m/%d %H:%M %p")
+    ]
+  end
+  puts t
+end
+task wd: :withdrawals
+
+desc "Shows deposits"
+task :deposits => [:environment] do
+  txs = Bittrex::Deposit.all
+  t = Terminal::Table.new
+  t << %w(Currency Qty Confirms Date)
+  t << :separator
+  txs.sort_by{|sb| [sb.currency, sb.executed_at]}.each do |tx|
+    t << [
+      tx.currency,
+      satoshi(tx.quantity),
+      tx.confirmations,
+      tx.executed_at.strftime("%a %m/%d %H:%M %p")
+    ]
+  end
+  puts t
+end
+task d: :deposits
 
 desc "Lists wallets with a balance"
 task :wallets => [:environment] do
