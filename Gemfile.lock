@@ -21,6 +21,11 @@ GEM
       em-http-request
       faye-websocket
     cookiejar (0.3.3)
+    cryptoexchange (0.18.0)
+      http (~> 1.0.0)
+      lru_redux
+    domain_name (0.5.20170404)
+      unf (>= 0.0.5, < 1.0.0)
     em-http-request (1.1.5)
       addressable (>= 2.3.4)
       cookiejar (!= 0.3.1)
@@ -37,12 +42,24 @@ GEM
     faye-websocket (0.10.7)
       eventmachine (>= 0.12.0)
       websocket-driver (>= 0.5.1)
+    http (1.0.4)
+      addressable (~> 2.3)
+      http-cookie (~> 1.0)
+      http-form_data (~> 1.0.1)
+      http_parser.rb (~> 0.6.0)
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
+    http-form_data (1.0.3)
     http_parser.rb (0.6.0)
+    lru_redux (1.1.0)
     multipart-post (2.0.0)
     public_suffix (3.0.0)
     rake (12.0.0)
     terminal-table (1.7.3)
       unicode-display_width (~> 1.1.1)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.4)
     unicode-display_width (1.1.1)
     websocket-driver (0.7.0)
       websocket-extensions (>= 0.1.0)
@@ -56,6 +73,7 @@ DEPENDENCIES
   bittrex!
   coinbase
   coinbase-exchange
+  cryptoexchange
   rake (= 12.0.0)
   terminal-table
 
