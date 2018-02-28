@@ -7,7 +7,7 @@ module Exchanges
     end
 
     def settings
-      Config.settings[exchange_name]
+      Config.settings.fetch(exchange_name, {})
     end
 
     def configured?
@@ -47,6 +47,8 @@ module Exchanges
     end
 
     def adapt_wallets data
+      return [] if data.nil?
+
       data.map do |w|
         balance = w["balance"]["amount"].to_f
         currency = w["currency"]

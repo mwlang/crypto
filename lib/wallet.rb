@@ -8,8 +8,13 @@ class Wallet
     @available = available
     @pending = pending
     @pending = nil if @pending.to_f.zero?
-    @balance_usd = bal_usd unless bal_usd.nil?
-    @balance_btc = bal_btc unless bal_btc.nil?
+    if symbol =~ /^USD/
+      @balance_usd = available
+      @balance_btc = available / usd_rate
+    else
+      @balance_usd = bal_usd unless bal_usd.nil?
+      @balance_btc = bal_btc unless bal_btc.nil?
+    end
   end
 
   def exchange_name
@@ -21,7 +26,6 @@ class Wallet
   end
 
   def usd_rate
-    return 1.0 if symbol == "USD"
     Config.btcusd_rate
   end
 
@@ -36,6 +40,9 @@ class Wallet
     return 0.0 unless pair = exchange.btc_pair(symbol)
     return 0.0 unless ticker = Config.market.ticker(pair)
     ticker.last
+  rescue Exception => e
+    puts e.inspect
+    0
   end
 
   def balance_btc

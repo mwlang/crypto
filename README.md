@@ -9,9 +9,15 @@ That's the start of this little tool, which I expect will grow in features over 
 Presently, this tool is wired only to Bittrex and Coinbase for most commands.  You must have both configured to
 use this tool without errors.
 
-NOTE: Recently added: Balances now supported for Coinbase, GDAX, Bittrex, and Binance.
-
 CAUTION:  THERE MAY BE BUGS!  Report bugs in the issue tracker or send me a PR with the bug already fixed!
+
+## What New!
+
+* December 2017:
+  * balances now supported for Coinbase, GDAX, Bittrex, and Binance.
+
+* January 2018:
+  * YAML Wallets -- declare coins and quantity held via your exchanges.yml file.
 
 ## To Install
 
@@ -48,6 +54,30 @@ binance:
 ~~~
 
 NOTE:  You must have at least bittrex and coinbase configured to avoid errors.  Accepting PR's to remove this limitation!
+
+For the YAML Wallets, you can add an entry for virtually any coin you have for whatever storage device or exchange out there.  If you name your entry by one of the exchanges supported via [Coin Gecko's cryptoexchange gem](https://github.com/coingecko/cryptoexchange), then prices will
+be pulled from the exchange directly for the coins listed.  Otherwise, the logic falls back to looking up prices on Bittrex and Binance (if configured).  In leu of retrieving your full wallet contents from the exchange, you'll simply declare the coins and the quantity you hold in your exchanges.yml file and only the exchange rates are pulled from the exchanges.  An example:
+
+~~~YAML
+bittrex:
+  api_key: d1d433126b129f2805218888888
+  api_secret: 123448146894902804664fd88888888
+binance:
+  api_key: V8ldzlNLA5G0tlGYarRdU2sDjRnLjbF1QpIHgL62MjD7mOH12
+  api_secret: gkFkZ4Zpt8XJocxL8MP1qulLVK5hgDZ4a9m1yAs5RROIbFKynk8YA
+cobinhood:
+  coins:
+    cob: 90.226246224
+kucoin:
+  coins:
+    bnty: 34.6729
+exodus:
+  coins:
+    bat: 100.0
+    btc: 0.26860
+    bcc: 2.0626588
+    eth: 0.28465467
+~~~
 
 ## Usage
 

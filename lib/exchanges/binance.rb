@@ -7,7 +7,7 @@ module Exchanges
     end
 
     def settings
-      Config.settings[exchange_name]
+      Config.settings.fetch(exchange_name, {})
     end
 
     def configured?
@@ -28,12 +28,17 @@ module Exchanges
       pairs.detect{ |p| p.target == "BTC" && p.base == symbol }
     end
 
+    def large_balances all_wallets
+      all_wallets.select{ |w| w.balance_usd >= (settings["small_balance"] || SMALL_BALANCE_THRESHOLD) }
+    end
+
     def wallets
       return [] unless configured?
-      adapt_wallets client.account_info["balances"]
+      large_balances(adapt_wallets client.account_info["balances"])
     end
 
     def adapt_wallets data
+      return [] if data.nil?
       data.map do |w|
         available = w["free"].to_f
         pending = w["locked"].to_f

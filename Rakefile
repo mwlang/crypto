@@ -161,27 +161,19 @@ def wallet_table t, wallets
 end
 
 desc "Lists wallets with a balance"
-task :wallets => [:environment] do
+task :wallets, [:exchange_name] => [:environment] do |t, args|
+  ex = args[:exchange_name]
+
   btc_total = 0.0
   usd_total = 0.0
 
   t = Terminal::Table.new
 
-  t, usd_sub_total, btc_sub_total = wallet_table(t, Exchanges::Gdax.wallets)
-  btc_total += btc_sub_total
-  usd_total += usd_sub_total
-
-  t, usd_sub_total, btc_sub_total = wallet_table(t, Exchanges::Coinbase.wallets)
-  btc_total += btc_sub_total
-  usd_total += usd_sub_total
-
-  t, usd_sub_total, btc_sub_total = wallet_table(t, Exchanges::Bittrex.wallets)
-  btc_total += btc_sub_total
-  usd_total += usd_sub_total
-
-  t, usd_sub_total, btc_sub_total = wallet_table(t, Exchanges::Binance.wallets)
-  btc_total += btc_sub_total
-  usd_total += usd_sub_total
+  EXCHANGES.select{|s| ex.nil? || s.exchange_name == ex}.each do |exchange|
+    t, usd_sub_total, btc_sub_total = wallet_table(t, exchange.wallets)
+    btc_total += btc_sub_total
+    usd_total += usd_sub_total
+  end
 
   t << [
     nil,
@@ -234,3 +226,7 @@ desc "runs full stack orders, wallets, etc."
 task :run => [:environment, :closed_orders, :open_orders, :wallets, :rates]
 
 task default: :run
+
+task :t => [:environment] do
+  p Exchanges::Kucoin.wallets
+end
