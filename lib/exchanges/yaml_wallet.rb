@@ -21,9 +21,9 @@ module Exchanges
     end
 
     def btc_pair symbol
-      pairs.detect{ |p| p.target == "BTC" && p.base == symbol.upcase } # ||
-      bittrex_pairs.detect{ |p| p.target == "BTC" && p.base == symbol.upcase } ||
-      binance_pairs.detect{ |p| p.target == "BTC" && p.base == symbol.upcase }
+      pairs.detect{ |p| p.target == "BTC" && p.base == symbol.upcase } ||
+      binance_pairs.detect{ |p| p.target == "BTC" && p.base == symbol.upcase } ||
+      bittrex_pairs.detect{ |p| p.target == "BTC" && p.base == symbol.upcase }
     end
 
     def bittrex_pairs
