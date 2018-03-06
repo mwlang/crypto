@@ -20,18 +20,20 @@ module Exchanges
       []
     end
 
+    def ticker symbol
+      %w{bittrex binance gdax kucoin cryptopia}.each do |exch|
+        market = Cryptoexchange::Models::MarketPair.new market: exch, base: symbol.upcase, target: 'BTC'
+        begin
+          Cryptoexchange::Client.new.ticker(market)
+          return market
+        rescue NoMethodError
+          # NOP
+        end
+      end
+    end
+
     def btc_pair symbol
-      pairs.detect{ |p| p.target == "BTC" && p.base == symbol.upcase } ||
-      binance_pairs.detect{ |p| p.target == "BTC" && p.base == symbol.upcase } ||
-      bittrex_pairs.detect{ |p| p.target == "BTC" && p.base == symbol.upcase }
-    end
-
-    def bittrex_pairs
-      @pairs ||= Exchanges::Bittrex.pairs
-    end
-
-    def binance_pairs
-      @pairs ||= Exchanges::Binance.pairs
+      pairs.detect{ |p| p.target == "BTC" && p.base == symbol.upcase } || ticker(symbol)
     end
 
     def wallets

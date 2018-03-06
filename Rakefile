@@ -1,4 +1,5 @@
 require_relative 'lib/crypto'
+require 'faraday'
 
 task :environment do
   # NOP

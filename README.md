@@ -13,6 +13,11 @@ CAUTION:  THERE MAY BE BUGS!  Report bugs in the issue tracker or send me a PR w
 
 ## What New!
 
+* March 2018:
+  * Added support for staking wallets commonly listed on Cryptoid such as BitBean Cash.
+  * Increased number of exchanges to find ticker data for Yaml Wallets.
+  * USDT correctly displays BTC worth now.
+
 * December 2017:
   * balances now supported for Coinbase, GDAX, Bittrex, and Binance.
 
@@ -55,8 +60,7 @@ binance:
 
 NOTE:  You must have at least bittrex and coinbase configured to avoid errors.  Accepting PR's to remove this limitation!
 
-For the YAML Wallets, you can add an entry for virtually any coin you have for whatever storage device or exchange out there.  If you name your entry by one of the exchanges supported via [Coin Gecko's cryptoexchange gem](https://github.com/coingecko/cryptoexchange), then prices will
-be pulled from the exchange directly for the coins listed.  Otherwise, the logic falls back to looking up prices on Bittrex and Binance (if configured).  In leu of retrieving your full wallet contents from the exchange, you'll simply declare the coins and the quantity you hold in your exchanges.yml file and only the exchange rates are pulled from the exchanges.  An example:
+For the YAML Wallets, you can add an entry for virtually any coin you have for whatever storage device or exchange out there.  If you name your entry by one of the exchanges supported via [Coin Gecko's cryptoexchange gem](https://github.com/coingecko/cryptoexchange), then prices will be pulled from the exchange directly for the coins listed.  Otherwise, the logic falls back to looking up prices on Bittrex and Binance (if configured).  In leu of retrieving your full wallet contents from the exchange, you'll simply declare the coins and the quantity you hold in your exchanges.yml file and only the exchange rates are pulled from the exchanges.  An example:
 
 ~~~YAML
 bittrex:
@@ -78,6 +82,33 @@ exodus:
     bcc: 2.0626588
     eth: 0.28465467
 ~~~
+
+Coins listed on Cryptoid, which are typically kept in PoS staking wallets are now supported.  To set up cryptoid:
+
+~~~YAML
+cryptoid:
+  addresses:
+    bitb: 2Jo3AHmW2SxvHCxqc7AMm4w2jgFDgRFG
+~~~
+
+Now you can see your staking coins effortlessly:
+
+~~~
+>> rake wallets[cryptoid]
++----------+--------------+--------------+---------+-------------+--------------+
+| CRYPTOID | Quantity     | Available    | Pending | USD         | BTC          |
++----------+--------------+--------------+---------+-------------+--------------+
+| BITB     | 547985.59980 | 547985.59980 |         | $   7288.12 |   0.67950214 |
++----------+--------------+--------------+---------+-------------+--------------+
+|          |              | CRYPTOID     | TOTAL   | $   7288.12 |   0.67950214 |
++----------+--------------+--------------+---------+-------------+--------------+
+|          |              | OVERALL      | TOTAL   | $   7288.12 |   0.67950214 |
++----------+--------------+--------------+---------+-------------+--------------+
+~~~
+
+NOTE: "BITB" recently changed to "BEAN", but Bittrex still holds "BITB" in it's API calls.  To workaround, we add
+Bittrex's symbol to the YAML file.  Cryptoid will provide redirect to "BEAN" API URL when supplied "BITB" and
+we automatically visit the redirect.  In this way, we get our cake and can eat it too. (for now!)
 
 ## Usage
 
@@ -137,13 +168,14 @@ Several commands have short aliases for them:
 To see Coinbase rates:
 ~~~
 >> rake rates
-+----------+-----------+
-| Exchange | Rate      |
-+----------+-----------+
-| BTC/USD  | $ 4291.85 |
-| ETH/USD  | $  290.99 |
-| LTC/USD  | $   52.04 |
-+----------+-----------+
++----------+-------------+
+| Exchange | Rate        |
++----------+-------------+
+| BTC/USD  | $  10638.30 |
+| ETH/USD  | $    812.20 |
+| LTC/USD  | $    196.30 |
+| BCH/USD  | $   1185.31 |
++----------+-------------+
 ~~~
 
 See the balance on every non-zero balance wallet.
