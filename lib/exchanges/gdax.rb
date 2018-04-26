@@ -1,14 +1,7 @@
 module Exchanges
   module Gdax
+    extend ExchangeMethods
     extend self
-
-    def exchange_name
-      "gdax"
-    end
-
-    def settings
-      Config.settings.fetch(exchange_name, {})
-    end
 
     def configured?
       !!(settings["api_key"] && settings["api_secret"] && settings["api_passphrase"])
@@ -34,7 +27,7 @@ module Exchanges
 
     def wallets
       return [] unless configured?
-      adapt_wallets client.accounts
+      large_balances adapt_wallets client.accounts
     end
 
     def adapt_wallets data

@@ -1,14 +1,7 @@
 module Exchanges
   module Bittrex
+    extend ExchangeMethods
     extend self
-
-    def exchange_name
-      "bittrex"
-    end
-
-    def settings
-      Config.settings.fetch(exchange_name, {})
-    end
 
     def configured?
       !!(settings["api_key"] && settings["api_secret"])
@@ -43,10 +36,6 @@ module Exchanges
       ::Bittrex::Deposit.all
     end
 
-    def pairs
-      @pairs ||= Config.market.pairs(exchange_name)
-    end
-
     def btc_pair symbol
       pairs.detect{ |p| p.target == "BTC" && p.base == symbol }
     end
@@ -58,7 +47,7 @@ module Exchanges
     def wallets
       return [] unless configured?
       configure!
-      adapt_wallets ::Bittrex::Wallet.all.sort_by{|sb| sb.currency}
+      large_balances adapt_wallets ::Bittrex::Wallet.all.sort_by{|sb| sb.currency}
     end
 
     def adapt_wallets data

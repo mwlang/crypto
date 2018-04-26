@@ -6,6 +6,7 @@ task :environment do
 end
 
 def satoshi value
+  return '' if value.nil? || value.zero?
   "%12.12s" % ("%0.8f" % value) rescue ''
 end
 
@@ -15,6 +16,7 @@ def market_usd_exchange_rate market
 end
 
 def fmt_usd value
+  return '' if value.nil? || value.zero?
   "$%10.10s" % ("%0.2f" % value)
 end
 
@@ -132,7 +134,7 @@ def wallet_table t, wallets
   btc_total = 0.0
 
   wallets.each do |w|
-    next if w.balance_usd.zero?
+    # next if w.balance_usd.zero?
 
     usd_total += w.balance_usd
     btc_total += w.balance_btc

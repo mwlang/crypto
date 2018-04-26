@@ -1,35 +1,14 @@
 module Exchanges
   class YamlWallet
+    include ExchangeMethods
     attr_reader :exchange_name
 
     def initialize exchange_name
       @exchange_name = exchange_name
     end
 
-    def settings
-      Config.settings.fetch(exchange_name, {})
-    end
-
     def configured?
       !!settings["coins"]
-    end
-
-    def pairs
-      @pairs ||= Config.market.pairs(exchange_name)
-    rescue NameError
-      []
-    end
-
-    def ticker symbol
-      %w{bittrex binance gdax kucoin cryptopia}.each do |exch|
-        market = Cryptoexchange::Models::MarketPair.new market: exch, base: symbol.upcase, target: 'BTC'
-        begin
-          Cryptoexchange::Client.new.ticker(market)
-          return market
-        rescue NoMethodError
-          # NOP
-        end
-      end
     end
 
     def btc_pair symbol

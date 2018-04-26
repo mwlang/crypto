@@ -1,14 +1,7 @@
 module Exchanges
   module Coinbase
+    extend ExchangeMethods
     extend self
-
-    def exchange_name
-      "coinbase"
-    end
-
-    def settings
-      Config.settings.fetch(exchange_name, {})
-    end
 
     def configured?
       !!(settings["api_key"] && settings["api_secret"])
@@ -43,7 +36,7 @@ module Exchanges
 
     def wallets
       return [] unless configured?
-      adapt_wallets client.accounts
+      large_balances adapt_wallets client.accounts
     end
 
     def adapt_wallets data
