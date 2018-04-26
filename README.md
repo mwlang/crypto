@@ -12,6 +12,8 @@ use this tool without errors.
 CAUTION:  THERE MAY BE BUGS!  Report bugs in the issue tracker or send me a PR with the bug already fixed!
 
 ## What New!
+* April 2018:
+  * Added support for tracking Ethereum addresses and all ERC20 tokens held in that address.
 
 * March 2018:
   * Added support for staking wallets commonly listed on Cryptoid such as BitBean Cash.
@@ -43,6 +45,8 @@ NOTE:  The "bittrex API ruby gem" has bugs.  I've forked and fixed those bugs an
 Set your API keys for Bittrex and Coinbase (the only supported exchanges at the moment) by changing to crypto folder and copy config/exchanges.yml.example to config/exchanges.yml and add your API key and API Secret to the file.  You'll need both to successfully use this tool to see BTC and USD.  Errors will likely occur without the file and keys in place.
 
 ~~~YAML
+defaults:
+  small_balance: 2.0
 bittrex:
   api_key: d1d433126b129f2805218888888
   api_secret: 123448146894902804664fd88888888
@@ -56,6 +60,12 @@ gdax:
 binance:
   api_key: V8ldzlNLA5G0tlGYarRdU2sDjRnLjbF1QpIHgL62MjD7mOH12
   api_secret: gkFkZ4Zpt8XJocxL8MP1qulLVK5hgDZ4a9m1yAs5RROIbFKynk8YA
+exodus:
+  addresses:
+    eth: "0x364b111FEF8A471111113726D73819085bED111a"
+  coins:
+    etc: 99.99958
+    btc: 0.04935028
 ~~~
 
 NOTE:  You must have at least bittrex and coinbase configured to avoid errors.  Accepting PR's to remove this limitation!
@@ -63,6 +73,8 @@ NOTE:  You must have at least bittrex and coinbase configured to avoid errors.  
 For the YAML Wallets, you can add an entry for virtually any coin you have for whatever storage device or exchange out there.  If you name your entry by one of the exchanges supported via [Coin Gecko's cryptoexchange gem](https://github.com/coingecko/cryptoexchange), then prices will be pulled from the exchange directly for the coins listed.  Otherwise, the logic falls back to looking up prices on Bittrex and Binance (if configured).  In leu of retrieving your full wallet contents from the exchange, you'll simply declare the coins and the quantity you hold in your exchanges.yml file and only the exchange rates are pulled from the exchanges.  An example:
 
 ~~~YAML
+defaults:
+  small_balance: 2.0
 bittrex:
   api_key: d1d433126b129f2805218888888
   api_secret: 123448146894902804664fd88888888
@@ -73,6 +85,7 @@ cobinhood:
   coins:
     cob: 90.226246224
 kucoin:
+  small_balance: 5.0
   coins:
     bnty: 34.6729
 exodus:
@@ -92,6 +105,18 @@ cryptoid:
 ~~~
 
 Now you can see your staking coins effortlessly:
+
+ERC20 tokens can now be tracked with Ethereum addresses.  The tokens are found on the block explorer and estimated worth displayed.
+
+Example using Exodus wallet and ETH address together:
+~~~
+exodus:
+  addresses:
+    eth: "0x364b111FEF8A471111113726D73819085bED111a"
+  coins:
+    etc: 99.99958
+    btc: 0.04935028
+~~~
 
 ~~~
 >> rake wallets[cryptoid]
