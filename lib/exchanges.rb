@@ -7,17 +7,19 @@ require_relative 'exchanges/bittrex'
 require_relative 'exchanges/kucoin'
 require_relative 'exchanges/cryptoid'
 require_relative 'exchanges/exodus'
+require_relative 'exchanges/coin_market_cap'
 
 SMALL_BALANCE_THRESHOLD = 1.0 # USD
 
 EXCHANGES = [
   Exchanges::Gdax,
   Exchanges::Coinbase,
-  Exchanges::Bittrex,
-  Exchanges::Binance,
   Exchanges::Kucoin,
   Exchanges::Cryptoid,
+  Exchanges::CoinMarketCap,
   Exchanges::Exodus,
+  Exchanges::Bittrex,
+  Exchanges::Binance,
 ]
 
 require_relative 'exchanges/yaml_wallet'
