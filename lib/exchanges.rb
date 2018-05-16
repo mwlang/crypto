@@ -12,14 +12,14 @@ require_relative 'exchanges/coin_market_cap'
 SMALL_BALANCE_THRESHOLD = 1.0 # USD
 
 EXCHANGES = [
+  Exchanges::Binance,
+  Exchanges::Bittrex,
   Exchanges::Gdax,
   Exchanges::Coinbase,
   Exchanges::Kucoin,
   Exchanges::Cryptoid,
   Exchanges::CoinMarketCap,
   Exchanges::Exodus,
-  Exchanges::Bittrex,
-  Exchanges::Binance,
 ]
 
 require_relative 'exchanges/yaml_wallet'

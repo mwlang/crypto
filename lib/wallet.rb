@@ -42,6 +42,7 @@ class Wallet
     ticker.last || 0.0
   rescue Exception => e
     puts e.inspect
+    puts e.backtrace
     0
   end
 
