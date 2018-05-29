@@ -12,6 +12,9 @@ use this tool without errors.
 CAUTION:  THERE MAY BE BUGS!  Report bugs in the issue tracker or send me a PR with the bug already fixed!
 
 ## What New!
+* May 2018:
+  * Cobinhood support added.  API key with read-only is all that's needed.
+
 * April 2018:
   * Added support for tracking Ethereum addresses and all ERC20 tokens held in that address.
 
@@ -60,6 +63,8 @@ gdax:
 binance:
   api_key: V8ldzlNLA5G0tlGYarRdU2sDjRnLjbF1QpIHgL62MjD7mOH12
   api_secret: gkFkZ4Zpt8XJocxL8MP1qulLVK5hgDZ4a9m1yAs5RROIbFKynk8YA
+cobinhood:
+  api_key: eyjhacl[-- extremely long key redacted --]cbf88
 exodus:
   addresses:
     eth: "0x364b111FEF8A471111113726D73819085bED111a"
