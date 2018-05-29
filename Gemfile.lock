@@ -34,6 +34,9 @@ GEM
       faraday (~> 0.12)
       faraday_middleware (~> 0.12)
       faye-websocket (~> 0.10)
+    cobinhood (0.0.1)
+      faraday (~> 0.12)
+      faraday_middleware (~> 0.12)
     coinbase (4.2.0)
     coinbase-exchange (0.2.0)
       bigdecimal
@@ -90,6 +93,7 @@ PLATFORMS
 DEPENDENCIES
   binance
   bittrex!
+  cobinhood
   coinbase
   coinbase-exchange
   cryptoexchange!
