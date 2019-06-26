@@ -21,16 +21,18 @@ module Exchanges
       settings["addresses"]
     end
 
-    def fetch_balance coin, address
-      response = Faraday.get("https://chainz.cryptoid.info/#{coin}/api.dws?q=getbalance&a=#{address}")
+    def fetch_balance symbol, address
+      root_url = "https://chainz.cryptoid.info/#{symbol}/api.dws"
+      url = "#{root_url}?q=getbalance&a=#{address}"
+      response =   Faraday.get(url)
       response = Faraday.get(response.headers["location"]) if response.status == 302
       response.status == 200 ? response.body.to_f : 0.0
     end
 
     def get_address_balances
       balances = {}
-      addresses.each do |coin, address|
-        balances[coin] = fetch_balance coin, address
+      addresses.each do |symbol, entry|
+        balances[symbol] = { balance: fetch_balance(symbol, entry["address"]), entry: entry }
       end
       return balances
     end
@@ -40,13 +42,27 @@ module Exchanges
       large_balances adapt_wallets(get_address_balances)
     end
 
+    def get_btc_rate entry
+      market = Cryptoexchange::Models::MarketPair.new \
+        market: entry["exchange"], 
+        base: entry["symbol"].upcase, 
+        target: 'BTC'
+      begin
+        return Cryptoexchange::Client.new.ticker(market)
+      rescue NoMethodError
+        # NOP
+      end
+    end
+
     def adapt_wallets data
       return [] if data.nil?
-      data.map do |coin, balance|
-        available = balance
+      data.map do |symbol, data|
+        available = data[:balance]
         pending = 0.0
         balance = available + pending
-        Wallet.new self, coin.upcase, balance, available, pending
+        bal_btc = get_btc_rate(data[:entry]).last * balance
+        bal_usd = bal_btc * Config.btcusd_rate
+        Wallet.new(self, symbol, balance, available, pending, bal_usd, bal_btc)
       end
     end
 

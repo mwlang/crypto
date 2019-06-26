@@ -39,6 +39,7 @@ class Wallet
     return 1.0 if symbol == "BTC"
     return 0.0 unless pair = exchange.btc_pair(symbol)
     return 0.0 unless ticker = Config.market.ticker(pair)
+    return 0.0 if ticker.is_a?(Hash) && ticker[:error]
     ticker.last || 0.0
   rescue Exception => e
     puts e.inspect
