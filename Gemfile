@@ -8,5 +8,5 @@ gem 'coinbase'
 gem 'coinbase-exchange'
 gem 'binance'
 gem 'cryptoexchange', github: "mwlang/cryptoexchange", branch: "develop"
-gem 'kucoin_ruby', github: 'mwlang/kucoin_ruby', branch: "develop"
+gem 'kucoin-api', github: 'mwlang/kucoin-api', branch: "master"
 gem 'cobinhood', '0.0.2'

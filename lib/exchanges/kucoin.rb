@@ -9,9 +9,12 @@ module Exchanges
 
     def client
       raise "Kucoin not configured in config/exchanges.yml" unless configured?
-      require 'kucoin_ruby'
-      KucoinRuby::Net.config({api_key: settings["api_key"], api_secret: settings["api_secret"]})
-      KucoinRuby::Operations
+      require 'kucoin/api'
+      ::Kucoin::Api::REST.new(
+        api_key: settings["api_key"], 
+        api_secret: settings["api_secret"], 
+        api_passphrase: settings["api_passphrase"]
+      )
     end
 
     def pairs
@@ -26,18 +29,25 @@ module Exchanges
 
     def wallets
       return [] unless configured?
-      result = client.balance
-      return [] unless result["success"]
-      large_balances adapt_wallets(result["data"])
+      result = client.user.accounts.list
+      large_balances adapt_wallets(result)
     end
 
+    # {
+    #   "balance"=>"0.05524851", 
+    #   "available"=>"0.05524851", 
+    #   "holds"=>"0", 
+    #   "currency"=>"BTC", 
+    #   "id"=>"5c6a4fc299a1d81b25d4f18f", 
+    #   "type"=>"trade"
+    # }
     def adapt_wallets data
       return [] if data.nil?
       data.map do |w|
-        available = w["balance"].to_f
-        pending = w["freezeBalance"].to_f
-        balance = available + pending
-        Wallet.new self, w["coinType"], balance, available, pending
+        balance = w["balance"].to_f
+        available = w["available"].to_f
+        pending = balance - available
+        Wallet.new self, w["currency"], balance, available, pending
       end
     end
 
